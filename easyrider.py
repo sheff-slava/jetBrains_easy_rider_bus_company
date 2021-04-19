@@ -33,7 +33,7 @@ json_obj1 = '''[
         "stop_id": 3,
         "stop_name": "Elm Street",
         "next_stop": 5,
-        "stop_type": "",
+        "stop_type": "O",
         "a_time": "08:19"
     },
     {
@@ -42,7 +42,7 @@ json_obj1 = '''[
         "stop_name": "Fifth Avenue",
         "next_stop": 7,
         "stop_type": "O",
-        "a_time": "08:17"
+        "a_time": "08:25"
     },
     {
         "bus_id": 128,
@@ -50,7 +50,7 @@ json_obj1 = '''[
         "stop_name": "Sesame Street",
         "next_stop": 0,
         "stop_type": "F",
-        "a_time": "08:07"
+        "a_time": "08:37"
     },
     {
         "bus_id": 256,
@@ -73,8 +73,8 @@ json_obj1 = '''[
         "stop_id": 6,
         "stop_name": "Sunset Boulevard",
         "next_stop": 7,
-        "stop_type": "",
-        "a_time": "09:44"
+        "stop_type": "O",
+        "a_time": "09:59"
     },
     {
         "bus_id": 256,
@@ -123,25 +123,17 @@ json_obj2 = '''[
 
 
 list_of_dict = json.loads(input())
-# list_of_dict = json.loads(json_obj1)
+# list_of_dict = json.loads(json_obj2)
 # list_of_dict.sort(key=lambda x: x['bus_id'])
 
-wrong_time_dict = dict()
-bus_id = list_of_dict[0]['bus_id']
-found_wrong_time = False
-i = 0
-for i in range(len(list_of_dict) - 1):
-    if not found_wrong_time and not check_time(list_of_dict[i]['a_time'], list_of_dict[i + 1]['a_time'])\
-            and list_of_dict[i]['bus_id'] == list_of_dict[i + 1]['bus_id']:
-        wrong_time_dict[bus_id] = list_of_dict[i + 1]['stop_name']
-        found_wrong_time = True
-    elif list_of_dict[i]['bus_id'] != list_of_dict[i + 1]['bus_id']:
-        bus_id = list_of_dict[i + 1]['bus_id']
-        found_wrong_time = False
+wrong_stops_list = list()
+for dict_ in list_of_dict:
+    if dict_['stop_type'] == 'O' and dict_['stop_name'] != 'Fifth Avenue':
+        wrong_stops_list.append(dict_['stop_name'])
 
-print('Arrival time test:')
-if len(wrong_time_dict) == 0:
+print('On demand stops test:')
+if len(wrong_stops_list) == 0:
     print('OK')
 else:
-    for line, station in wrong_time_dict.items():
-        print(f'bus_id line {line}: wrong time on station {station}')
+    wrong_stops_list.sort()
+    print('Wrong stop type:', wrong_stops_list)
